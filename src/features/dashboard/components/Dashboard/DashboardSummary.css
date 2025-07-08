@@ -1,0 +1,46 @@
+.user-banner {
+  background-color: var(--white);
+  padding: 0 24px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-banner-body {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.welcome-message h2 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+}
+
+.welcome-message p {
+  margin: 0;
+  font-size: 14px;
+  max-width: 80%;
+}
+
+.rescue-button {
+  background-color: white;
+  color: var(--secondary-color);
+  font-weight: 500;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.rescue-button:hover {
+  background-color: #f2f2f2;
+}
