@@ -1,6 +1,6 @@
 .auth-sidebar {
-  background-color: #18314F;
-  color: #fff;
+  background-color: var(--primary-color);
+  color: var(--white);
   padding: 40px;
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;

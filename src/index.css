@@ -13,8 +13,13 @@
   --secondary-color: #058ED9;
 
   --white: #F7F9FC;
+  --white-25: rgba(226, 232, 240, 0.25);
+  --white-50: rgba(226, 232, 240, 0.5);
+
   --black: #1f1f1f;
   --red: #FF6542;
+  --grey: #666;
+  --light-grey: #D9D9D9;
 }
 
 
