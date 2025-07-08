@@ -1,14 +1,16 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import axios from "axios";
 import "./LoginForm.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AlertDialog from "../../../../components/ui/AlertDialog/AlertDialog";
+import { useAuth } from "../../../../contexts/AuthContext";
 
 export default function LoginForm() {
+  const { login } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState<"success" | "error" | "info" | null>(null);
 
@@ -23,26 +25,16 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
 
     try {
-      const response = await axios.post("http://localhost:3000/auth/login", {
-        email,
-        password,
-      });
-
-      const token = response.data.token;
-      console.log("Token recebido:", token);
+      await login(email, password);
       showAlert("Login realizado com sucesso!", "success");
     } catch (err: any) {
-      if (axios.isAxiosError(err)) {
-        if (err.response?.status === 401) {
-          showAlert("Credenciais inválidas.", "error");
-        } else {
-          showAlert("Erro ao fazer login. Tente novamente.", "error");
-        }
+      if (err.response?.status === 401) {
+        showAlert("Credenciais inválidas.", "error");
       } else {
-        showAlert("Erro de conexão com o servidor.", "error");
+        console.log(err)
+        showAlert("Erro ao fazer login. Tente novamente.", "error");
       }
     }
   };
@@ -88,8 +80,6 @@ export default function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-
-          {error && <p className="error-text">{error}</p>}
 
           <button type="submit" className="btn-primary">
             Entrar
