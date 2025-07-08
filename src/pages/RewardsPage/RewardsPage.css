@@ -1,0 +1,11 @@
+.rewards-page-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.rewards-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
