@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from '../../../contexts/axiosConfig';
 import type { Reward } from "../types/Reward";
 
 const API_URL = "http://localhost:3000";
@@ -10,6 +10,46 @@ export async function getAllRewards(): Promise<Reward[]> {
   } catch (error) {
     console.error("Erro ao buscar recompensas:", error);
     return [];
+  }
+}
+
+export async function getRewardById(id: string): Promise<Reward | null> {
+  try {
+    const response = await axios.get<Reward>(`${API_URL}/rewards/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar recompensa por ID:', error);
+    return null;
+  }
+}
+
+export async function createReward(reward: Omit<Reward, 'id'>): Promise<Reward | null> {
+  try {
+    const response = await axios.post<Reward>(`${API_URL}/rewards`, reward);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao criar recompensa:', error);
+    return null;
+  }
+}
+
+export async function updateReward(id: string, reward: Partial<Reward>): Promise<Reward | null> {
+  try {
+    const response = await axios.put<Reward>(`${API_URL}/rewards/${id}`, reward);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao atualizar recompensa:', error);
+    return null;
+  }
+}
+
+export async function deleteReward(id: string): Promise<boolean> {
+  try {
+    await axios.delete(`${API_URL}/rewards/${id}`);
+    return true;
+  } catch (error) {
+    console.error('Erro ao deletar recompensa:', error);
+    return false;
   }
 }
 
