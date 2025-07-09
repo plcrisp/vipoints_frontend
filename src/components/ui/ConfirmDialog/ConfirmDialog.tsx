@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ConfirmDialog.css';
 
 interface ConfirmDialogProps {
@@ -16,7 +17,9 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ isOpen, title, text, onCl
       <div className="modal-container">
         <div className="modal-header">
           <h2>{title}</h2>
-          <button className="modal-close" onClick={onClose}>x</button>
+          <button className="modal-close" onClick={onClose}>
+            <FontAwesomeIcon icon="times" />
+          </button>
         </div>
 
         <div className="modal-body">
