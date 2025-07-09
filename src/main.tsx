@@ -24,10 +24,11 @@ import { faUser,
   faPlus,
   faPen,
   faTrash,
-  faTimes
+  faTimes,
+  faTriangleExclamation
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faUser, faTimes, faPen, faTrash, faPlus, faLock, faChevronLeft, faChevronRight, faChartBar, faShoppingCart, faSignOutAlt, faGift, faTicketAlt, faBullhorn, faUserPlus, faUsers, faFilter, faTrophy, faSearch, faHistory, faSliders);
+library.add(faUser, faTriangleExclamation, faTimes, faPen, faTrash, faPlus, faLock, faChevronLeft, faChevronRight, faChartBar, faShoppingCart, faSignOutAlt, faGift, faTicketAlt, faBullhorn, faUserPlus, faUsers, faFilter, faTrophy, faSearch, faHistory, faSliders);
 
 
 createRoot(document.getElementById('root')!).render(
