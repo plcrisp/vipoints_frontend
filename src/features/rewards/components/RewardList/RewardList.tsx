@@ -1,15 +1,22 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../../../../components/common/Header/Header";
 import "./RewardList.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Reward } from "../../types/Reward";
-import { createReward, getAllRewards, deleteReward } from "../../services/RewardService";
+import { createReward, getAllRewards, deleteReward, filterRewards, sortRewards } from "../../services/RewardService";
 import AddReward from "../AddReward/AddReward";
 import ConfirmDialog from "../../../../components/ui/ConfirmDialog/ConfirmDialog";
 import AlertDialog from "../../../../components/ui/AlertDialog/AlertDialog";
+import FilterDialog from "../../../../components/ui/FilterDialog/FilterDialog";
 
 export default function RewardList() {
   const [rewards, setRewards] = useState<Reward[]>([]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [sortField, setSortField] = useState<keyof Reward>("name");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const [isAddModalOpen, setisAddModalOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -112,6 +119,12 @@ export default function RewardList() {
     setTimeout(() => setShowAlert(false), 3000);
   };
 
+  const visibleRewards = useMemo(() => {
+    let result = filterRewards(rewards, searchTerm);
+    result = sortRewards(result, sortField, sortDirection);
+    return result;
+  }, [rewards, searchTerm, sortField, sortDirection]);
+
   return (
     <div className="reward-list-container">
       <Header
@@ -123,11 +136,19 @@ export default function RewardList() {
         <div className="reward-actions">
           <div className="left-actions">
             <div className="search-container">
-              <input type="text" placeholder="Buscar..." />
+              <input
+                type="text"
+                placeholder="Buscar…"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
               <FontAwesomeIcon icon="search" className="search-icon" />
             </div>
 
-            <button className="filter-button">
+            <button
+              className="filter-button"
+              onClick={() => setIsFilterOpen(true)}
+            >
               <FontAwesomeIcon icon="filter" /> Filtro
             </button>
           </div>
@@ -149,7 +170,7 @@ export default function RewardList() {
           <div className="reward-actions-row"></div>
         </div>
 
-        {rewards.map((reward) => (
+        {visibleRewards.map((reward) => (
           <div key={reward.id} className="reward-row">
            <div className="reward-name">
             <FontAwesomeIcon icon="gift" className="reward-icon" />
@@ -195,6 +216,18 @@ export default function RewardList() {
         title="Confirmar exclusão"
         text="Tem certeza que deseja excluir esta recompensa?"
         onConfirm={handleConfirmDelete}
+      />
+
+      <FilterDialog
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        selectedField={sortField}
+        selectedDirection={sortDirection}
+        onApply={(field, direction) => {
+          setSortField(field);
+          setSortDirection(direction);
+          setIsFilterOpen(false);
+        }}
       />
 
       {showAlert && (

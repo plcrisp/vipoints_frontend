@@ -1,0 +1,22 @@
+.modal-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 12px;
+  font-weight: 500;
+  color: var(--black);
+}
+
+.modal-label select {
+  padding: 8px 12px;
+  border: 1px solid var(--light-grey);
+  border-radius: 8px;
+  background-color: var(--white);
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+}
+
+.modal-label select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
