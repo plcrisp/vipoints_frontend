@@ -1,0 +1,85 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  font-family: var(--main-font);
+}
+
+.modal-container {
+  background-color: var(--white);
+  color: var(--black);
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--grey);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+  color: var(--black);
+}
+
+.modal-body {
+  margin-top: 16px;
+  font-size: 1rem;
+  color: var(--grey);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.modal-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.modal-btn.close {
+  background-color: var(--light-grey);
+  color: var(--black);
+}
+
+.modal-btn.close:hover {
+  background-color: var(--white-50);
+}
+
+.modal-btn.confirm {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+.modal-btn.confirm:hover {
+  background-color: var(--primary-color-hover);
+}

@@ -3,12 +3,21 @@ import Header from "../../../../components/common/Header/Header";
 import "./RewardList.css";
 import { useEffect, useState } from "react";
 import type { Reward } from "../../types/Reward";
-import { createReward, getAllRewards } from "../../services/RewardService";
+import { createReward, getAllRewards, deleteReward } from "../../services/RewardService";
 import AddReward from "../AddReward/AddReward";
+import ConfirmDialog from "../../../../components/ui/ConfirmDialog/ConfirmDialog";
+import AlertDialog from "../../../../components/ui/AlertDialog/AlertDialog";
 
 export default function RewardList() {
   const [rewards, setRewards] = useState<Reward[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isAddModalOpen, setisAddModalOpen] = useState(false);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [selectedRewardId, setSelectedRewardId] = useState<string | null>(null);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState<"success" | "error" | "info">("success");
 
   useEffect(() => {
     async function fetchRewards() {
@@ -34,9 +43,44 @@ export default function RewardList() {
 
     if (newReward) {
       setRewards((prev) => [...prev, newReward]);
+      setAlertMessage("Recompensa adicionada!");
+      setAlertType("success");
+      setShowAlert(true);
     } else {
-      console.error('Erro ao adicionar recompensa');
+      setAlertMessage("Erro ao adicionar recompensa.");
+      setAlertType("error");
+      setShowAlert(true);
     }
+
+    // Fechar o alerta automaticamente após 3 segundos
+    setTimeout(() => setShowAlert(false), 3000);
+  };
+
+  const openConfirmDialog = (id: string) => {
+    setSelectedRewardId(id);
+    setConfirmDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedRewardId) return;
+
+    const success = await deleteReward(selectedRewardId);
+    if (success) {
+      setRewards((prev) => prev.filter(r => r.id !== selectedRewardId));
+      setAlertMessage("Recompensa removida!");
+      setAlertType("success");
+      setShowAlert(true);
+    } else {
+      setAlertMessage("Erro ao deletar recompensa.");
+      setAlertType("error");
+      setShowAlert(true);
+    }
+
+    setConfirmDialogOpen(false);
+    setSelectedRewardId(null);
+
+    // Fechar o alerta automaticamente após 3 segundos
+    setTimeout(() => setShowAlert(false), 3000);
   };
 
   return (
@@ -60,7 +104,7 @@ export default function RewardList() {
           </div>
 
           <div className="right-actions">
-            <button className="add-reward-button" onClick={() => setIsModalOpen(true)}>
+            <button className="add-reward-button" onClick={() => setisAddModalOpen(true)}>
               <FontAwesomeIcon icon="plus" /> Adicionar Recompensa
             </button>
           </div>
@@ -89,19 +133,39 @@ export default function RewardList() {
             <button className="edit-btn" aria-label="Editar">
              <FontAwesomeIcon icon="pen" />
             </button>
-           	<button className="remove-btn" aria-label="Remover">
-             <FontAwesomeIcon icon="trash" />
-           	</button>
+           	<button
+              className="remove-btn"
+              aria-label="Remover"
+              onClick={() => openConfirmDialog(reward.id)}
+            >
+              <FontAwesomeIcon icon="trash" />
+            </button>
            </div>
           </div>
     ))}
       </div>
 
       <AddReward
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isAddModalOpen}
+        onClose={() => setisAddModalOpen(false)}
         onSubmit={handleAddReward}
       />
+
+      <ConfirmDialog
+        isOpen={confirmDialogOpen}
+        onClose={() => setConfirmDialogOpen(false)}
+        title="Confirmar exclusão"
+        text="Tem certeza que deseja excluir esta recompensa?"
+        onConfirm={handleConfirmDelete}
+      />
+
+      {showAlert && (
+        <AlertDialog
+          message={alertMessage}
+          type={alertType}
+          onClose={() => setShowAlert(false)}
+        />
+      )}
     </div>
   );
 }
