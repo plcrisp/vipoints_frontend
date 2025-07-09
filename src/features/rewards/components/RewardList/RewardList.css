@@ -77,6 +77,11 @@
   align-items: center;
   gap: 6px;
   font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.filter-button:hover {
+  background-color: var(--light-grey);
 }
 
 .add-reward-button {
@@ -89,7 +94,7 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.3s;
 }
 
 .add-reward-button:hover {
@@ -148,22 +153,21 @@
   justify-content: flex-end;
 }
 
-.edit-btn {
-  background-color: #1da1f2;
-  color: var(--white);
+.edit-btn,
+.remove-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  width: 32px;         
+  height: 32px;        
+  border-radius: 8px;  
+  font-size: 14px;       
+  transition: color 0.2s ease;
+  background-color: var(--white);
 }
 
-.remove-btn {
-  background-color: #ff5f5f;
-  color: var(--white);
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
+.edit-btn:hover, .remove-btn:hover {
+  color: var(--primary-color);
 }

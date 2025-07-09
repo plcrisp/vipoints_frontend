@@ -78,19 +78,23 @@ export default function RewardList() {
 
         {rewards.map((reward) => (
           <div key={reward.id} className="reward-row">
-            <div className="reward-name">
-              <FontAwesomeIcon icon="gift" className="reward-icon" />
-              <span>{reward.name}</span>
-            </div>
-            <span>{reward.requiredPoints}</span>
-            <span>{reward.description}</span>
-            <span>{reward.availableQuantity}</span>
-            <div className="reward-actions-row">
-              <button className="edit-btn">Editar</button>
-              <button className="remove-btn">Remover</button>
-            </div>
+           <div className="reward-name">
+            <FontAwesomeIcon icon="gift" className="reward-icon" />
+            <span>{reward.name}</span>
+           </div>
+           <span>{reward.requiredPoints}</span>
+           <span>{reward.description}</span>
+           <span>{reward.availableQuantity}</span>
+           <div className="reward-actions-row">
+            <button className="edit-btn" aria-label="Editar">
+             <FontAwesomeIcon icon="pen" />
+            </button>
+           	<button className="remove-btn" aria-label="Remover">
+             <FontAwesomeIcon icon="trash" />
+           	</button>
+           </div>
           </div>
-        ))}
+    ))}
       </div>
 
       <AddReward
