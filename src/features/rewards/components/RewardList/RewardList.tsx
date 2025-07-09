@@ -19,6 +19,8 @@ export default function RewardList() {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState<"success" | "error" | "info">("success");
 
+  const [editingRewardId, setEditingRewardId] = useState<string | null>(null);
+
   useEffect(() => {
     async function fetchRewards() {
       const data = await getAllRewards();
@@ -83,6 +85,33 @@ export default function RewardList() {
     setTimeout(() => setShowAlert(false), 3000);
   };
 
+  const handleUpdateReward = (updated: {
+    id: string;
+    name: string;
+    points: number;
+    description: string;
+    quantity: number;
+  }) => {
+    setRewards((prev) =>
+      prev.map((r) =>
+        r.id === updated.id
+          ? {
+              ...r,
+              name: updated.name,
+              requiredPoints: updated.points,
+              description: updated.description,
+              availableQuantity: updated.quantity,
+            }
+          : r
+      )
+    );
+
+    setAlertMessage("Recompensa atualizada!");
+    setAlertType("success");
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000);
+  };
+
   return (
     <div className="reward-list-container">
       <Header
@@ -130,8 +159,12 @@ export default function RewardList() {
            <span>{reward.description}</span>
            <span>{reward.availableQuantity}</span>
            <div className="reward-actions-row">
-            <button className="edit-btn" aria-label="Editar">
-             <FontAwesomeIcon icon="pen" />
+            <button
+              className="edit-btn"
+              aria-label="Editar"
+              onClick={() => setEditingRewardId(reward.id)}
+            >
+              <FontAwesomeIcon icon="pen" />
             </button>
            	<button
               className="remove-btn"
@@ -146,9 +179,14 @@ export default function RewardList() {
       </div>
 
       <AddReward
-        isOpen={isAddModalOpen}
-        onClose={() => setisAddModalOpen(false)}
+        isOpen={isAddModalOpen || editingRewardId !== null}
+        onClose={() => {
+          setisAddModalOpen(false);
+          setEditingRewardId(null);
+        }}
         onSubmit={handleAddReward}
+        rewardId={editingRewardId ?? undefined}
+        onUpdate={handleUpdateReward}
       />
 
       <ConfirmDialog
