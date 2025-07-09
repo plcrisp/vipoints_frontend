@@ -29,17 +29,22 @@
 
 .reward-actions {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
 }
 
-.icon-button {
-  background-color: var(--white);
-  border: 1px solid var(--light-grey);
-  border-radius: 6px;
-  padding: 8px 12px;
-  cursor: pointer;
+.left-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.right-actions {
+  display: flex;
+  align-items: center;
 }
 
 .search-container {
@@ -72,6 +77,23 @@
   align-items: center;
   gap: 6px;
   font-size: 14px;
+}
+
+.add-reward-button {
+  border: 1px solid var(--light-grey);
+  background-color: var(--white);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-reward-button:hover {
+  background-color: var(--light-grey);
 }
 
 .reward-table {

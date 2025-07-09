@@ -3,10 +3,12 @@ import Header from "../../../../components/common/Header/Header";
 import "./RewardList.css";
 import { useEffect, useState } from "react";
 import type { Reward } from "../../types/Reward";
-import { getAllRewards } from "../../services/RewardService";
+import { createReward, getAllRewards } from "../../services/RewardService";
+import AddReward from "../AddReward/AddReward";
 
 export default function RewardList() {
   const [rewards, setRewards] = useState<Reward[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchRewards() {
@@ -17,6 +19,26 @@ export default function RewardList() {
     fetchRewards();
   }, []);
 
+  const handleAddReward = async (reward: {
+    name: string;
+    points: number;
+    description: string;
+    quantity: number;
+  }) => {
+    const newReward = await createReward({
+      name: reward.name,
+      requiredPoints: reward.points,
+      description: reward.description,
+      availableQuantity: reward.quantity,
+    });
+
+    if (newReward) {
+      setRewards((prev) => [...prev, newReward]);
+    } else {
+      console.error('Erro ao adicionar recompensa');
+    }
+  };
+
   return (
     <div className="reward-list-container">
       <Header
@@ -26,18 +48,22 @@ export default function RewardList() {
 
       <div className="reward-list-header">
         <div className="reward-actions">
-          <button className="icon-button">
-            <FontAwesomeIcon icon="sliders" />
-          </button>
+          <div className="left-actions">
+            <div className="search-container">
+              <input type="text" placeholder="Buscar..." />
+              <FontAwesomeIcon icon="search" className="search-icon" />
+            </div>
 
-          <div className="search-container">
-            <input type="text" placeholder="Buscar..." />
-            <FontAwesomeIcon icon="search" className="search-icon" />
+            <button className="filter-button">
+              <FontAwesomeIcon icon="filter" /> Filtro
+            </button>
           </div>
 
-          <button className="filter-button">
-            <FontAwesomeIcon icon="filter" /> Filtro
-          </button>
+          <div className="right-actions">
+            <button className="add-reward-button" onClick={() => setIsModalOpen(true)}>
+              <FontAwesomeIcon icon="plus" /> Adicionar Recompensa
+            </button>
+          </div>
         </div>
       </div>
 
@@ -66,6 +92,12 @@ export default function RewardList() {
           </div>
         ))}
       </div>
+
+      <AddReward
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleAddReward}
+      />
     </div>
   );
 }
